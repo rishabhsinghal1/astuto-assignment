@@ -1,5 +1,9 @@
-import { MaterialReactTable, type MRT_ColumnDef } from "material-react-table";
-import React, { useMemo, useState } from "react";
+import {
+  MaterialReactTable,
+  MRT_Cell,
+  type MRT_ColumnDef,
+} from "material-react-table";
+import React, { ReactNode, useMemo, useState } from "react";
 import tableDataJson from "../jsondata/tableData.json";
 import tableSchemaJson from "../jsondata/tableSchema.json";
 import { getShade, getTooltipData } from "../HelperFunctions/getShade";
@@ -9,6 +13,12 @@ interface TableColumn {
   header: string;
   accessorKey: string;
   type: "text" | "number" | "image" | "status" | "tags";
+}
+
+interface TableSchema {
+  columns: TableColumn[];
+  pagination: boolean;
+  rowSelection: boolean;
 }
 
 interface TableRow {
@@ -27,7 +37,7 @@ const tableSchema: {
   columns: TableColumn[];
   pagination: boolean;
   rowSelection: boolean;
-} = tableSchemaJson as any;
+} = tableSchemaJson as TableSchema;
 
 const tableData: TableRow[] = tableDataJson as TableRow[];
 
@@ -54,9 +64,7 @@ const TableComponent: React.FC = () => {
       accessorKey: col.accessorKey,
       header: col.header,
       size: getEachColumnWidth(index), // Set the column width in pixels
-      //   minSize: 50, // Minimum width
-      //   maxSize: 400, // Maximum width
-      Cell: ({ cell }) => {
+      Cell: ({ cell }: { cell: MRT_Cell<TableRow, unknown> }): ReactNode => {
         if (col.type === "image") {
           return (
             <div className="relative flex justify-start items-center gap-2">
@@ -88,7 +96,7 @@ const TableComponent: React.FC = () => {
               {cell
                 .getValue<string[]>()
                 .slice(0, 3)
-                .map((tag, index) => (
+                .map((tag: string, index: number) => (
                   <span
                     key={index}
                     className={`py-0.5 px-2 rounded-full ${getShade(index)}`}
@@ -107,12 +115,13 @@ const TableComponent: React.FC = () => {
             </div>
           );
         }
-        return cell.getValue();
+        return cell.getValue() as ReactNode;
       },
     }));
   }, []);
 
   // Row selection state
+  /* eslint-disable-next-line */
   const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({});
 
   return (
