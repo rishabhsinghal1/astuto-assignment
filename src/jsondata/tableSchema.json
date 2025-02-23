@@ -1,0 +1,11 @@
+{
+  "columns": [
+    { "header": "Name", "accessorKey": "profilePic", "type": "image" },
+    { "header": "Status", "accessorKey": "status", "type": "status" },
+    { "header": "Role", "accessorKey": "role", "type": "text" },
+    { "header": "Email", "accessorKey": "email", "type": "text" },
+    { "header": "Teams", "accessorKey": "teams", "type": "tags" }
+  ],
+  "pagination": true,
+  "rowSelection": true
+}
