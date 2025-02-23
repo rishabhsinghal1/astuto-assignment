@@ -4,9 +4,9 @@ import {
   type MRT_ColumnDef,
 } from "material-react-table";
 import React, { ReactNode, useMemo, useState } from "react";
+import { getShade, getTooltipData } from "../HelperFunctions/getShade";
 import tableDataJson from "../jsondata/tableData.json";
 import tableSchemaJson from "../jsondata/tableSchema.json";
-import { getShade, getTooltipData } from "../HelperFunctions/getShade";
 
 // Define TypeScript interfaces for Table Schema & Data
 interface TableColumn {
@@ -121,7 +121,6 @@ const TableComponent: React.FC = () => {
   }, []);
 
   // Row selection state
-  /* eslint-disable-next-line */
   const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({});
 
   return (
@@ -136,6 +135,7 @@ const TableComponent: React.FC = () => {
           getRowId={(row) => row.id.toString()}
           onRowSelectionChange={setRowSelection}
           muiTableBodyRowProps={{ sx: { cursor: "pointer" } }}
+          state={{ rowSelection }}
         />
       </div>
     </div>
